@@ -1,55 +1,55 @@
 <?php
-# Hugging Face and Bot tokens
-$modeUrl = "https://api-inference.huggingface.co/models/gpt-neo-1.3B";
-
-$modeUrl = "https://api-inference.huggingface.co/models/gpt2"; // Update this if necessary
-$hugFace = "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"; // (Use your Hugging Face token here)
-$botToken = "8186610571:AAGQuFiDmn3j21ntnecn_Bd9HMlay46J04A";
-
-$headers = [
-    "Authorization: Bearer $hugFace",
-    "Content-Type: application/json"
-];
+// Ollama and Telegram Bot settings
+$modeUrl = "https://abc12345.ngrok.io/api/generate"; // Ollama local server
+$botToken = "8186610571:AAGQuFiDmn3j21ntnecn_Bd9HMlay46J04A"; // Your Telegram Bot Token
 
 // Get incoming update from Telegram
-$update = json_decode(file_get_contents('php://input'), TRUE);
+$update = json_decode(file_get_contents('php://input'), true);
 
-// Get chat ID and message
-$chatId = $update["message"]["chat"]["id"];
-$message = $update["message"]["text"];
+// Get chat ID and user message
+$chatId = $update["message"]["chat"]["id"] ?? null;
+$message = $update["message"]["text"] ?? null;
 
-// Prepare data for Hugging Face
+// Exit if no message
+if (!$chatId || !$message) {
+    exit;
+}
+
+// Prepare data for Ollama
 $data = [
-    "inputs" => "You are a friendly and helpful chatbot with a polite and warm personality. User says: \"$message\". Respond like a helpful human assistant:",
+    "model" => "mistral", // or llama2, or whatever model you loaded
+    "prompt" => "You are a helpful assistant. User says: \"$message\". Respond kindly and informatively.",
+    "stream" => false
 ];
 
 // Prepare HTTP options
 $options = [
     "http" => [
-        "header"  => implode("\r\n", $headers),
+        "header"  => "Content-Type: application/json\r\n",
         "method"  => "POST",
         "content" => json_encode($data),
-    ],
+        "timeout" => 60 // timeout in seconds
+    ]
 ];
 
-// Send request to Hugging Face
+// Send request to Ollama
 $context = stream_context_create($options);
 $responseRaw = file_get_contents($modeUrl, false, $context);
 
-// Log the raw Hugging Face response for debugging
-error_log("Hugging Face Response: " . $responseRaw); // Log to view the response in Railway's logs
-
-// Decode Hugging Face response
-$responseData = json_decode($responseRaw, true);
-
-// Check if the response has generated text and return it
-if (isset($responseData[0]["generated_text"])) {
-    $response = $responseData[0]["generated_text"];
+// Check for errors
+if ($responseRaw === false) {
+    error_log("Error connecting to Ollama.");
+    $reply = "I'm having trouble thinking right now 😔.";
 } else {
-    // If the response doesn't contain the generated text, return the raw response for debugging
-    $response = "Sorry, I couldn't think of anything 😢. Raw response: " . print_r($responseData, true);
+    $responseData = json_decode($responseRaw, true);
+
+    if (isset($responseData["response"])) {
+        $reply = $responseData["response"];
+    } else {
+        $reply = "Sorry, I couldn't think of anything 😢. Raw response: " . print_r($responseData, true);
+    }
 }
 
-// Send the response back to Telegram
-file_get_contents("https://api.telegram.org/bot$botToken/sendMessage?chat_id=$chatId&text=" . urlencode($response));
+// Send the reply back to Telegram
+file_get_contents("https://api.telegram.org/bot$botToken/sendMessage?chat_id=$chatId&text=" . urlencode($reply));
 ?>
