@@ -1,6 +1,6 @@
 <?php
 # Hugging Face and Bot tokens
-$modeUrl = " https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3";
+$modeUrl = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-small";
 
 // $modeUrl = "https://api-inference.huggingface.co/models/gpt2"; // Update this if necessary
 $hugFace = "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"; // (Use your Hugging Face token here)
