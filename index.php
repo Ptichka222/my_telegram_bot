@@ -17,20 +17,20 @@ if (!$chatId || !$message) {
 
 // Prepare data for Ollama
 $data = [
-    "model" => "mistral", // or llama2, or whatever model you loaded
-    "prompt" => "You are a helpful assistant. User says: \"$message\". Respond kindly and informatively.",
-    "stream" => false
+    "model" => "llama3", // Or whatever model you have in Ollama
+    "prompt" => "You are a helpful and friendly assistant. User says: \"$message\". Reply warmly:",
 ];
 
 // Prepare HTTP options
 $options = [
     "http" => [
-        "header"  => "Content-Type: application/json\r\n",
+        "header"  => "Content-Type: application/json\r\nAuthorization: Bearer dummy\r\n",
         "method"  => "POST",
         "content" => json_encode($data),
         "timeout" => 60 // timeout in seconds
     ]
 ];
+
 
 // Send request to Ollama
 $context = stream_context_create($options);
