@@ -2,7 +2,7 @@
 # Hugging Face and Bot tokens
 $modeUrl = "https://api-inference.huggingface.co/models/gpt-neo-1.3B";
 
-// $modeUrl = "https://api-inference.huggingface.co/models/gpt2"; // Update this if necessary
+$modeUrl = "https://api-inference.huggingface.co/models/gpt2"; // Update this if necessary
 $hugFace = "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"; // (Use your Hugging Face token here)
 $botToken = "8186610571:AAGQuFiDmn3j21ntnecn_Bd9HMlay46J04A";
 
