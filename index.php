@@ -1,6 +1,6 @@
 <?php
 // Hugging Face and Bot tokens
-$modeUrl = "https://huggingface.co/TheBloke/phi-2-GGUF";
+$modeUrl = "https://huggingface.co/openai-community/gpt2";
 $hugFace = "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"; // (corrected: use your Hugging Face token here)
 $botToken = "8186610571:AAGQuFiDmn3j21ntnecn_Bd9HMlay46J04A";
 
