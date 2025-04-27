@@ -32,7 +32,7 @@ $options = [
 
 // Send request to Hugging Face
 $context = stream_context_create($options);
-$responseRaw = file_get_contents($modelUrl, false, $context);
+$responseRaw = file_get_contents($modeUrl, false, $context);
 
 // Decode Hugging Face response
 $responseData = json_decode($responseRaw, true);
