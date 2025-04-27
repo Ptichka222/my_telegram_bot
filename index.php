@@ -17,10 +17,10 @@ $chatId = $update["message"]["chat"]["id"];
 $message = $update["message"]["text"];
 
 // Prepare data for Hugging Face
-$data = [
-    "inputs" => $message,
-];
 
+$data = [
+    "inputs" => "You are a helpful chatbot. User says: \"$message\". Reply nicely:",
+];
 // Prepare HTTP options
 $options = [
     "http" => [
