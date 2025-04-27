@@ -34,20 +34,22 @@ $options = [
 // Send request to Hugging Face API
 $context = stream_context_create($options);
 $responseRaw = file_get_contents($modeUrl, false, $context);
-
 // Check if the response from Hugging Face is valid
-if ($responseRaw === FALSE) {
-    $response = "Sorry, I couldn't connect to the AI server. Please try again later.";
-} else {
-    // Decode Hugging Face response
-    $responseData = json_decode($responseRaw, true);
+// Send request to Hugging Face
+$context = stream_context_create($options);
+$responseRaw = file_get_contents($modeUrl, false, $context);
 
-    // Get the AI generated text or fallback to a default message
-    if (isset($responseData[0]["generated_text"])) {
-        $response = $responseData[0]["generated_text"];
-    } else {
-        $response = "Sorry, I couldn't think of anything 😢";
-    }
+// Log the raw response to a file for debugging
+file_put_contents('response.log', $responseRaw);
+
+// Decode Hugging Face response
+$responseData = json_decode($responseRaw, true);
+
+// Get the AI generated text
+if (isset($responseData[0]["generated_text"])) {
+    $response = $responseData[0]["generated_text"];
+} else {
+    $response = "Sorry, I couldn't think of anything 😢";
 }
 
 // Send the AI response back to Telegram
