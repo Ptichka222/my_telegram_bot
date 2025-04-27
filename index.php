@@ -17,28 +17,28 @@ if (!$chatId || !$message) {
 
 // Prepare data for Ollama
 $data = [
-    "model" => "llama3", // Or whatever model you have in Ollama
+    "model" => "llama3", // Your model name
     "prompt" => "You are a helpful and friendly assistant. User says: \"$message\". Reply warmly:",
+    "stream" => false
 ];
 
 // Prepare HTTP options
 $options = [
     "http" => [
-        "header"  => "Content-Type: application/json\r\nAuthorization: Bearer dummy\r\n",
+        "header"  => "Content-Type: application/json\r\n",
         "method"  => "POST",
         "content" => json_encode($data),
         "timeout" => 60 // timeout in seconds
     ]
 ];
 
-
 // Send request to Ollama
 $context = stream_context_create($options);
-$responseRaw = file_get_contents($modeUrl, false, $context);
+$responseRaw = @file_get_contents($modeUrl, false, $context);
 
 // Check for errors
 if ($responseRaw === false) {
-    error_log("Error connecting to Ollama.");
+    error_log("Error connecting to Ollama. Response headers: " . print_r($http_response_header, true));
     $reply = "I'm having trouble thinking right now 😔.";
 } else {
     $responseData = json_decode($responseRaw, true);
