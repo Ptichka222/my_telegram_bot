@@ -1,6 +1,6 @@
 <?php
 // Ollama and Telegram Bot settings
-$modeUrl = "https://4d26-188-113-217-187.ngrok-free.app/api/generate"; // Ollama local server
+$modeUrl = "https://f129-188-113-217-187.ngrok-free.app/api/generate"; // Ollama local server
 $botToken = "8186610571:AAGQuFiDmn3j21ntnecn_Bd9HMlay46J04A"; // Your Telegram Bot Token
 
 // Get incoming update from Telegram
