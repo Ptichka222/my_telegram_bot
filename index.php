@@ -18,7 +18,7 @@ $message = $update["message"]["text"];
 
 // Prepare data for Hugging Face
 $data = [
-    "inputs" => "You are a helpful chatbot. User says: \"$message\".",
+    "inputs" => "You are a friendly and helpful chatbot with a polite and warm personality. User says: \"$message\". Respond like a helpful human assistant:",
 ];
 
 // Prepare HTTP options
