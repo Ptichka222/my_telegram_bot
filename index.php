@@ -11,7 +11,8 @@ $chatId = $update["message"]["chat"]["id"];
 $message = $update["message"]["text"];
 
 // A simple response
-$response = "You said: $message";
+if ($message == "1"){ $response = "2";}
+else {$response = "You said: $message";}
 
 // Send the response back using Telegram API
 file_get_contents("https://api.telegram.org/bot$botToken/sendMessage?chat_id=$chatId&text=" . urlencode($response));
