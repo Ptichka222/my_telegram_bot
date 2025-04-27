@@ -1,6 +1,6 @@
 <?php
 # Hugging Face and Bot tokens
-$modelUrl = "https://api-inference.huggingface.co/models/gpt2";
+$modeUrl = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct";
 $hugFace = "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"; // (corrected: use your Hugging Face token here)
 $botToken = "8186610571:AAGQuFiDmn3j21ntnecn_Bd9HMlay46J04A";
 
