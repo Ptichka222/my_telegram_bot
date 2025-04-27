@@ -1,6 +1,6 @@
 <?php
 # Hugging Face and Bot tokens
-$modeUrl = "https://huggingface.co/tiiuae/falcon-7b-instruct";  // Update this if necessary
+$modeUrl = "https://api-inference.huggingface.co/mistralai/Mistral-7B-Instruct-v0.3";  // Update this if necessary
 $hugFace = "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"; // (Use your Hugging Face token here)
 $botToken = "8186610571:AAGQuFiDmn3j21ntnecn_Bd9HMlay46J04A";
 
