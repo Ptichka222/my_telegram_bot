@@ -1,10 +1,9 @@
 <?php
-// Hugging Face and Bot tokens
-$modeUrl = "https://huggingface.co/openai-community/gpt2";
-$hugFace = "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"; // (corrected: use your Hugging Face token here)
+# Hugging Face and Bot tokens
+$modeUrl = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct";  // Update this if necessary
+$hugFace = "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"; // (Use your Hugging Face token here)
 $botToken = "8186610571:AAGQuFiDmn3j21ntnecn_Bd9HMlay46J04A";
 
-// Prepare headers for Hugging Face request
 $headers = [
     "Authorization: Bearer $hugFace",
     "Content-Type: application/json"
@@ -13,16 +12,16 @@ $headers = [
 // Get incoming update from Telegram
 $update = json_decode(file_get_contents('php://input'), TRUE);
 
-// Get chat ID and message from Telegram
+// Get chat ID and message
 $chatId = $update["message"]["chat"]["id"];
 $message = $update["message"]["text"];
 
-// Prepare data for Hugging Face request
+// Prepare data for Hugging Face
 $data = [
-    "inputs" => "You are a helpful chatbot. User says: \"$message\". Reply nicely:"
+    "inputs" => "You are a helpful chatbot. User says: \"$message\". Reply nicely:",
 ];
 
-// Setup HTTP options for the request to Hugging Face
+// Prepare HTTP options
 $options = [
     "http" => [
         "header"  => implode("\r\n", $headers),
@@ -31,28 +30,24 @@ $options = [
     ],
 ];
 
-// Send request to Hugging Face API
-$context = stream_context_create($options);
-$responseRaw = file_get_contents($modeUrl, false, $context);
-// Check if the response from Hugging Face is valid
 // Send request to Hugging Face
 $context = stream_context_create($options);
 $responseRaw = file_get_contents($modeUrl, false, $context);
 
-// Log the raw response to a file for debugging
-file_put_contents('response.log', $responseRaw);
+// Log the raw Hugging Face response for debugging
+error_log("Hugging Face Response: " . $responseRaw); // Log to view the response in Railway's logs
 
 // Decode Hugging Face response
 $responseData = json_decode($responseRaw, true);
 
-// Get the AI generated text
+// Check if the response has generated text and return it
 if (isset($responseData[0]["generated_text"])) {
     $response = $responseData[0]["generated_text"];
 } else {
-    $response = "Sorry, I couldn't think of anything 😢";
+    // If the response doesn't contain the generated text, return the raw response for debugging
+    $response = "Sorry, I couldn't think of anything 😢. Raw response: " . print_r($responseData, true);
 }
 
-// Send the AI response back to Telegram
+// Send the response back to Telegram
 file_get_contents("https://api.telegram.org/bot$botToken/sendMessage?chat_id=$chatId&text=" . urlencode($response));
-
 ?>
